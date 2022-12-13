@@ -5,8 +5,8 @@
   "private": true,
   "dependencies": {},
   "scripts": {
-  "predeploy": "cd fe && npm run build",
-  "deploy": "cd fe && gh-pages -d build"
+    "predeploy": "cd fe && npm run build",
+    "deploy": "cd fe && gh-pages -d build"
   },
   "devDependencies": {
     "gh-pages": "^4.0.0"
