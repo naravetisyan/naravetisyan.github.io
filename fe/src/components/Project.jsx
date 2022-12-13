@@ -82,7 +82,6 @@ const Project = () => {
           maxWidth = image.width > maxWidth ? image.width : maxWidth;
           maxHeight = maxHeight + image.height;
         });
-        console.log(maxWidth, maxHeight, 'maxWidth, maxHeight');
         canvas.width = maxWidth;
         canvas.height = maxHeight;
 
@@ -105,12 +104,11 @@ const Project = () => {
         const image = new Image();
         image.src = base64;
         const file = dataUrlToFile(base64, 'image.jpeg');
-        console.log(file);
         const formData = new FormData();
         formData.append('file', file);
 
         await axios
-          .post('http://localhost:3008/recognize-image', formData, {
+          .post('https://cd9e-141-136-90-87.eu.ngrok.io/recognize-image', formData, {
             'Content-Type': 'multipart/form-data;'
           })
           .then((res) => {

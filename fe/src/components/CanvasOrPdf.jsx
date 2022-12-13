@@ -29,7 +29,6 @@ const CanvasOrPdf = forwardRef(
         setOcrState(null);
       } else if (files.every((file) => file.type === 'image/jpeg')) {
         // image part
-        console.log(files, 'files');
         const imgs = [...files];
         setImgs(imgs);
         setPdfUrl(null);
