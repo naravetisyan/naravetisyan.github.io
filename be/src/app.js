@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
+import { createWorker } from 'tesseract.js';
+import fileupload from "express-fileupload";
 
-const { createWorker } = require('tesseract.js');
-const fileupload = require("express-fileupload");
 const app = express();
 
 app.use(cors());
