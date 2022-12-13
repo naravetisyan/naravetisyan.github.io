@@ -4,24 +4,15 @@
   "description": "Get started quickly with Express.",
   "sourceType": "module",
   "main": "src/app.js",
+  "type": "module",
   "scripts": {
     "start": "nodemon --exec babel-node src/app.js",
     "lint": "eslint ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yottaawesome/express-js-boilerplate.git"
   },
   "keywords": [
     "node",
     "express"
   ],
-  "author": "Vasilios Magriplis",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/yottaawesome/express-js-boilerplate/issues"
-  },
-  "homepage": "https://github.com/yottaawesome/express-js-boilerplate#readme",
   "devDependencies": {
     "@babel/core": "^7.20.5",
     "@babel/node": "^7.20.5",
