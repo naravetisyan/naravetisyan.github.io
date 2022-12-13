@@ -1,0 +1,19 @@
+{
+  "css.validate": false,
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "css.lint.unknownAtRules": "ignore",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "files.insertFinalNewline": true,
+  "prettier.singleQuote": true,
+  "prettier.jsxSingleQuote": false,
+  "html.completion.attributeDefaultValue": "doublequotes",
+  "prettier.trailingComma": "none",
+  "prettier.printWidth": 100
+}
