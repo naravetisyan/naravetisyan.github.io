@@ -2,6 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/build",
   "dependencies": {
     "@react-pdf-viewer/core": "^3.9.0",
     "@react-pdf-viewer/default-layout": "^3.9.0",
