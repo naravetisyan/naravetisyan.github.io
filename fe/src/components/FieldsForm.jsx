@@ -3,14 +3,14 @@ import { Button, Form, AutoComplete, Popover } from 'antd';
 import AddNewField from './AddNewField';
 import DEFAULT_FIELDS from '../constants/defaultFields';
 
-const FieldsForm = ({ ocrState, highlightTexts, processing, searchPluginInstance, pdfWordSuggestions }) => {
+const FieldsForm = ({ ocrState = [], highlightTexts, processing, searchPluginInstance, pdfWordSuggestions }) => {
   const [fields, setFields] = useState(DEFAULT_FIELDS);
   const [openAddNewInput, setOpenAddNewInput] = useState(false);
   const [formValues, setFormValues] = useState({});
   const [options, setOptions] = useState({});
   const [popupState, setPopupState] = useState(false);
 
-  const words = ocrState?.data?.words || [];
+  const words = ocrState;
 
   const { jumpToNextMatch } = searchPluginInstance;
 

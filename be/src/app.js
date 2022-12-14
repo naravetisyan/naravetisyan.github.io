@@ -17,9 +17,9 @@ app.post('/recognize-image', async (req, res) => {
   const base64 = Buffer.from(file.data).toString('base64')
   await worker.loadLanguage('eng');
   await worker.initialize('eng');
-  const data = await worker.recognize(`data:image/jpeg;base64, ${base64}`);
+  const { data } = await worker.recognize(`data:image/jpeg;base64, ${base64}`);
   await worker.terminate();
-  res.json(data);
+  res.json(data.words);
 });
 
 app.listen(process.env.PORT, () =>
