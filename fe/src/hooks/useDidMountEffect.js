@@ -6,7 +6,6 @@ const useDidMountEffect = (cb, deps) => {
   useEffect(() => {
     if (didMount.current) cb();
     else didMount.current = true;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 };
 
