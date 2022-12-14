@@ -118,8 +118,8 @@ const Project = () => {
         formData.append('file', file);
 
         const response = await axios
-          // .post('https://cd9e-141-136-90-87.eu.ngrok.io/recognize-image', formData, {
-          .post('http://localhost:3008/recognize-image', formData, {
+          .post('https://50f5-141-136-90-87.eu.ngrok.io/recognize-image', formData, {
+          // .post('http://localhost:3008/recognize-image', formData, {
             'Content-Type': 'multipart/form-data;'
           })
         setOcrState(response.data);
