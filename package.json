@@ -5,8 +5,10 @@
   "private": true,
   "dependencies": {},
   "scripts": {
-  "predeploy": "cd fe && npm run build",
-  "deploy": "cd fe && gh-pages -d build"
+  "backend": "cd be && npm start",
+  "frontend": "cd fe && npm start",
+  "predeploy-fe": "cd fe && npm run build",
+  "deploy-fe": "cd fe && gh-pages -d build"
   },
   "devDependencies": {
     "gh-pages": "^4.0.0"
