@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form, AutoComplete, Popover } from 'antd';
 import AddNewField from './AddNewField';
 import DEFAULT_FIELDS from '../constants/defaultFields';
 
-const FieldsForm = ({ ocrState, highlightTexts, processing, searchPluginInstance }) => {
+const FieldsForm = ({ ocrState, highlightTexts, processing, searchPluginInstance, pdfWordSuggestions }) => {
   const [fields, setFields] = useState(DEFAULT_FIELDS);
   const [openAddNewInput, setOpenAddNewInput] = useState(false);
   const [formValues, setFormValues] = useState({});
@@ -13,10 +13,6 @@ const FieldsForm = ({ ocrState, highlightTexts, processing, searchPluginInstance
   const words = ocrState?.data?.words || [];
 
   const { jumpToNextMatch } = searchPluginInstance;
-
-  const onFinish = (values) => {
-    console.log('Success:', values);
-  };
 
   const saveNewField = (newField) => {
     setOpenAddNewInput(false);
@@ -45,6 +41,22 @@ const FieldsForm = ({ ocrState, highlightTexts, processing, searchPluginInstance
     highlightTexts(filteredWords, selectedWord, field);
   };
 
+
+  const adjustPdfWordSuggestions = () => {
+    const words = Object.keys(pdfWordSuggestions).reduce((acc, field) => {
+      const obj = {...acc,
+        [field]: pdfWordSuggestions[field].map(( text ) => ({ value: text, key: text + Math.random() }))
+      };
+      return obj;
+    }, {});
+    setOptions(words);
+  };
+
+  useEffect(() => {
+    adjustPdfWordSuggestions();
+  }, [pdfWordSuggestions])
+  
+
   return (
     <div className="h-full flex flex-col justify-center">
       <div className="mb-2">
@@ -60,7 +72,6 @@ const FieldsForm = ({ ocrState, highlightTexts, processing, searchPluginInstance
         name="basic"
         wrapperCol={{ span: 16 }}
         layout="vertical"
-        onFinish={onFinish}
         autoComplete="off"
       >
         {fields.map((field, index) => {

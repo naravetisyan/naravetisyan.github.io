@@ -16,13 +16,11 @@ const Project = () => {
   const [texts, setTexts] = useState({});
   const [image, setImage] = useState(null);
   const [processing, setProcessing] = useState(false);
+  const [pdfWordSuggestions, setPdfWordSuggestions] = useState({})
+
   const canvasRef = useRef(null);
 
-  const searchPluginInstance = searchPlugin({
-    onHighlightKeyword: (props) => {
-      props.highlightEle.style.backgroundColor = 'rgba(255, 255, 0, .4)';
-    }
-  });
+  const searchPluginInstance = searchPlugin();
 
   const { highlight, clearHighlights } = searchPluginInstance;
 
@@ -54,7 +52,19 @@ const Project = () => {
       });
       setRectData(tempRects);
     } else {
-      searchableText ? highlight(searchableText) : clearHighlights();
+      const uniqueVals = new Set();
+      const highlightedWords = searchableText ? await highlight(searchableText) : clearHighlights();
+      highlightedWords?.forEach((word) => {
+        const regex = new RegExp(` (${searchableText}[^\\s]+) `, 'gd')
+        const match = word.pageText.match(regex);
+        match?.forEach((m) => {
+          uniqueVals.add(m.trim());
+        });
+      });
+      setPdfWordSuggestions({
+        ...pdfWordSuggestions,
+        [field]: Array.from(uniqueVals)
+      });
     }
   };
 
@@ -107,13 +117,12 @@ const Project = () => {
         const formData = new FormData();
         formData.append('file', file);
 
-        await axios
-          .post('https://cd9e-141-136-90-87.eu.ngrok.io/recognize-image', formData, {
+        const response = await axios
+          // .post('https://cd9e-141-136-90-87.eu.ngrok.io/recognize-image', formData, {
+          .post('http://localhost:3008/recognize-image', formData, {
             'Content-Type': 'multipart/form-data;'
           })
-          .then((res) => {
-            setOcrState(res.data);
-          });
+        setOcrState(response.data);
         setImage(image);
         setProcessing(false);
       });
@@ -123,22 +132,27 @@ const Project = () => {
     }
   };
 
+  const redrawCanvas = () => {
+    let canvas = canvasRef.current;
+    let ctx = canvas.getContext('2d');
+    ctx.drawImage(image, 0, 0);
+
+    Object.values(rectData).forEach((field) => {
+      Object.values(texts).forEach((text) => {
+        field[text] &&
+          field[text].forEach((rect) => {
+            ctx.lineWidth = '2';
+            ctx.strokeStyle = field.color;
+            ctx.strokeRect(...rect);
+          });
+      });
+    });
+  };
+
+
   useDidMountEffect(() => {
     if (rectData && image && ocrState) {
-      let canvas = canvasRef.current;
-      let ctx = canvas.getContext('2d');
-      ctx.drawImage(image, 0, 0);
-
-      Object.values(rectData).forEach((field) => {
-        Object.values(texts).forEach((text) => {
-          field[text] &&
-            field[text].forEach((rect) => {
-              ctx.lineWidth = '2';
-              ctx.strokeStyle = field.color;
-              ctx.strokeRect(...rect);
-            });
-        });
-      });
+      redrawCanvas();
     }
   }, [rectData, image, texts]);
 
@@ -161,6 +175,7 @@ const Project = () => {
             highlightTexts={highlightTexts}
             processing={processing}
             searchPluginInstance={searchPluginInstance}
+            pdfWordSuggestions={pdfWordSuggestions}
           />
         </Col>
       </Row>
