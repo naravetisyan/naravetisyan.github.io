@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/search/lib/styles/index.css';
+import { Spin } from 'antd';
 
 const ACCEPTABLE_FILE_TYPES = ['image/jpeg', 'application/pdf'];
 
@@ -56,7 +57,16 @@ const CanvasOrPdf = forwardRef(
           </div>
         ) : (
           <>
-            <h2>{processing && 'Processing...'}</h2>
+          {
+            processing && (
+              <div className='flex items-center text-blue-400'>
+                <h2 className='mr-2'>
+                  Processing
+                </h2>
+                <Spin className='mt-2'/>
+              </div>
+            )
+          }
             <canvas id="canvas" className={imgs ? 'w-4/5 mt-2' : 'w-0'} ref={ref} />
           </>
         )}

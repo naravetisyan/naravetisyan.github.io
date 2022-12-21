@@ -19,7 +19,11 @@ app.post('/recognize-image', async (req, res) => {
   await worker.initialize('eng');
   const { data } = await worker.recognize(`data:image/jpeg;base64, ${base64}`);
   await worker.terminate();
-  res.json(data.words);
+  res.json(data.words.map((w) => ({
+    bbox: w.bbox,
+    text: w.text,
+    symbols: w.symbols.map((s) => ({bbox: s.bbox, text: s.text}))
+  })));
 });
 
 app.listen(process.env.PORT, () =>

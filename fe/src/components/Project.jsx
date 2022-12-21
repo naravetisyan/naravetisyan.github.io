@@ -159,7 +159,7 @@ const Project = () => {
   return (
     <>
       <Row className="h-full">
-        <Col span={12} className="text-orange-500">
+        <Col span={12}>
           <CanvasOrPdf
             setOcrState={setOcrState}
             drawCanvasFromImages={drawCanvasFromImages}

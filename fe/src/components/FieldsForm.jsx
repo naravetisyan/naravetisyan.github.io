@@ -3,14 +3,14 @@ import { Button, Form, AutoComplete, Popover } from 'antd';
 import AddNewField from './AddNewField';
 import DEFAULT_FIELDS from '../constants/defaultFields';
 
-const FieldsForm = ({ ocrState = [], highlightTexts, processing, searchPluginInstance, pdfWordSuggestions }) => {
+const FieldsForm = ({ ocrState, highlightTexts, processing, searchPluginInstance, pdfWordSuggestions }) => {
   const [fields, setFields] = useState(DEFAULT_FIELDS);
   const [openAddNewInput, setOpenAddNewInput] = useState(false);
   const [formValues, setFormValues] = useState({});
   const [options, setOptions] = useState({});
   const [popupState, setPopupState] = useState(false);
 
-  const words = ocrState;
+  const words = ocrState || [];
 
   const { jumpToNextMatch } = searchPluginInstance;
 
@@ -23,32 +23,35 @@ const FieldsForm = ({ ocrState = [], highlightTexts, processing, searchPluginIns
     setOpenAddNewInput(false);
   };
 
-  const onSearch = (searchText, field) => {
-    const filteredWords = words.filter((word) =>
-      word.text.toLowerCase().startsWith(searchText.toLowerCase())
-    );
-    highlightTexts(filteredWords, searchText, field);
-    setOptions((prev) => ({
-      ...prev,
-      [field]: filteredWords.map(({ text }) => ({ value: text, key: text + Math.random() }))
-    }));
+  const findWords=(input, matchWholeWord) => {
+    return words?.filter((wordObj) => {
+      const word = wordObj.text.toLowerCase();
+      return matchWholeWord ? word.includes(input.toLowerCase()) : word.startsWith(input.toLowerCase());
+    });
   };
 
+  const onSearch = (searchText, field) => {
+    const filteredWords = findWords(searchText, false);
+    if (filteredWords) {
+      highlightTexts(filteredWords, searchText, field);
+      setOptions((prev) => ({
+        ...prev,
+        [field]: filteredWords.map(({ text }) => ({ value: text, key: text + Math.random() }))
+      }));
+    }
+  };
+
+
   const onSelect = (selectedWord, field) => {
-    const filteredWords = words.filter((word) =>
-      word.text.toLowerCase().includes(selectedWord.toLowerCase())
-    );
+    const filteredWords = findWords(selectedWord, true);
     highlightTexts(filteredWords, selectedWord, field);
   };
 
-
   const adjustPdfWordSuggestions = () => {
-    const words = Object.keys(pdfWordSuggestions).reduce((acc, field) => {
-      const obj = {...acc,
+    const words = Object.keys(pdfWordSuggestions).reduce((acc, field) => ({
+       ...acc,
         [field]: pdfWordSuggestions[field].map(( text ) => ({ value: text, key: text + Math.random() }))
-      };
-      return obj;
-    }, {});
+    }), {});
     setOptions(words);
   };
 
