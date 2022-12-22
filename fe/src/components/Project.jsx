@@ -118,7 +118,7 @@ const Project = () => {
         formData.append('file', file);
 
         const {data} = await axios
-          .post('https://b262-46-70-210-119.eu.ngrok.io/recognize-image', formData, {
+          .post('https://2867-46-70-163-249.eu.ngrok.io/recognize-image', formData, {
           // .post('http://localhost:3008/recognize-image', formData, {
             'Content-Type': 'multipart/form-data;'
           })
